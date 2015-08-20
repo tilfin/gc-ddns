@@ -23,15 +23,18 @@ exports.post = function(req, res, next) {
     next(new restify.errors.BadRequestError('Invalid host'));
     return;
   }
-  host += '.' + config.domain + '.';
 
-  var ip = req.params.ip;
-  if (!ip.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)) {
+  var ip = req.params.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  var recordType;
+
+  if (ip.match(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/)) {
+    recordType = 'A';
+  } else if (ip.match(/^(?:[A-F0-9]{1,4}:){7}[A-F0-9]{1,4}$/)) {
+    recordType = 'AAAA';
+  } else {
     next(new restify.errors.BadRequestError('Invalid IP address'));
     return;
   }
-
-  var recordType = req.params.type || 'A';
 
   var recordTtl = parseInt(req.params.ttl || config.ttl, 10);
   if (isNaN(recordTtl)) {

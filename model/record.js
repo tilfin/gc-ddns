@@ -9,6 +9,11 @@ exports.create = function(host, ip, recordType, ttl, callback) {
     return (resp.rrsets.length == 1) ? resp.rrsets[0] : null;
   })
   .then(function(existingRecord) {
+    if (existingRecord && existingRecord.rrdatas[0] == ip) {
+      return {
+          message: 'IP address is unchanged.'
+        };
+    }
     return client.createPromise(host, ip, recordType, ttl, existingRecord);
   })
   .then(function(resp) {

@@ -1,31 +1,28 @@
-var config = require('config').config;
+var config = require('config').config.googleCloud;
 var restify = require('restify');
-var key = require(config.authKeyJsonFile);
 var google = require('googleapis');
-
-var API_SCOPES = [
-  'https://www.googleapis.com/auth/ndev.clouddns.readwrite',
-  'https://www.googleapis.com/auth/cloud-platform'
-];
 
 
 function GcDnsClient() {
   this.dnsClient = null;
+  this.FQDNSuffix = '.' + config.dns.domain + '.';
 }
 GcDnsClient.prototype = {
   baseParams: function() {
     return {
-        managedZone: config.managedZone,
+        managedZone: config.dns.zone,
         project: config.project
       };
   },
 
-  listPromise: function(name, type) {
+  listPromise: function(host, type) {
     var self = this;
     return self.dnsClientPromise()
       .then(function(dns) {
         var params = self.baseParams();
-        if (name) params.name = name;
+        if (host) {
+          params.name = host + self.FQDNSuffix;
+        }
         if (type) params.type = type;
 
         return new Promise(function(resolve, reject) {
@@ -46,7 +43,7 @@ GcDnsClient.prototype = {
       .then(function(dns) {
         var resRecordSet = {
           kind: 'dns#resourceRecordSet',
-          name: host,
+          name: host + self.FQDNSuffix,
           type: recordType,
           rrdatas: [ip],
           ttl: ttl
@@ -81,6 +78,13 @@ GcDnsClient.prototype = {
 
     var self = this;
     return new Promise(function(resolve, reject) {
+        var API_SCOPES = [
+          'https://www.googleapis.com/auth/ndev.clouddns.readwrite',
+          'https://www.googleapis.com/auth/cloud-platform'
+        ];
+
+        var key = require(config.authKeyJsonFile);
+
         var jwtClient = new google.auth.JWT(key.client_email, null, key.private_key, API_SCOPES, null);
         jwtClient.authorize(function(err, tokens) {
           if (err) {
