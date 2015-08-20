@@ -5,7 +5,7 @@ var record = require('../model/record');
 
 function authorize(req, res, next) {
   var apiKey = req.params.key;
-  if (apiKey == config.apiKey) {
+  if (apiKey == config.app.apiKey) {
     return true;
   } else {
     next(new restify.errors.InvalidCredentialsError("Invaild API Key"));
