@@ -32,7 +32,7 @@ $ node app.js
 ## How to update A/AAAA record
 
 ```
-$ curl -d 'host=<Host name>&ip=<IP Address>&key=<API service key>'
+$ curl -X POST -d 'host=<Host name>&ip=<IP Address>&key=<API service key>' http://localhost:8080/records
 ```
 
 - Specify request source host IP address if _ip_ is not specified
