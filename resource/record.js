@@ -1,6 +1,6 @@
 var restify = require('restify');
 var config = require('config').config;
-var gcdns = require('../model/gcdns');
+var record = require('../model/record');
 
 
 function authorize(req, res, next) {
@@ -39,12 +39,12 @@ exports.post = function(req, res, next) {
     return;
   }
 
-  gcdns.createRecord(host, ip, recordType, recordTtl, function(err, result) {
+  record.create(host, ip, recordType, recordTtl, function(err, result) {
     if (err) {
       console.log(err);
       return next(err);
     }
 
-    res.json(resp);
+    res.json(result);
   });
 }
