@@ -1,5 +1,6 @@
 config:
-  apiKey: <API service key>
+  app:
+    apiKey: <API service key>
   googleCloud:
     project: <project name>
     authKeyJsonFile: <auth json file path>
