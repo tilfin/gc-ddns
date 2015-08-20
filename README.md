@@ -9,7 +9,8 @@ Edit _config/local.yml_
 
 ```
 config:
-  apiKey: <API service key>
+  app:
+    apiKey: <API service key>
   googleCloud:
     project: <project name>
     authKeyJsonFile: <auth json file path>
@@ -32,8 +33,12 @@ $ node app.js
 ## How to update A/AAAA record
 
 ```
-$ curl -X POST -d 'host=<Host name>&ip=<IP Address>&key=<API service key>' http://localhost:8080/records
+$ curl -X POST \
+    -d 'host=<Host name>&ip=<IP Address>&key=<API service key>&ttl=<TTL>' \
+    http://localhost:8080/records
 ```
 
+- Service port is config.app.port (default 8080)
+- Default TTL is config.ttl
 - Specify request source host IP address if _ip_ is not specified
 - Recommend to access API Service via HTTPS
