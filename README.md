@@ -4,9 +4,8 @@ gc-ddns
 Dynamic DNS API Service for Google Cloud
 
 
-# Configuration
-
-config/local.yml
+## Configuration
+Edit _config/local.yml_
 
 ```
 config:
@@ -19,9 +18,9 @@ config:
       domain: <domain>
 ```
 
-- **authKeyJsonFile** is provided by authentication page at Google Cloud Console.
+- _authKeyJsonFile_ is provided by authentication page at Google Cloud Console.
 
-# Setup and Start API service
+## Setup and Start API service
 
 ```
 $ git clone git@github.com:tilfin/gc-ddns.git
@@ -30,11 +29,11 @@ $ npm install
 $ node app.js
 ```
 
-# How to update A/AAAA record
+## How to update A/AAAA record
 
 ```
 $ curl -d 'host=<Host name>&ip=<IP Address>&key=<API service key>'
 ```
 
-- Specify request source host IP address if **ip** is not specified
+- Specify request source host IP address if _ip_ is not specified
 - Recommend to access API Service via HTTPS
