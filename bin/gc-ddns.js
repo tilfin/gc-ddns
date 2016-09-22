@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 const program = require('commander');
 const config = require('config').config;
 const record = require('../model/record');
@@ -11,11 +12,11 @@ program
   .action(function(){
     const client = new GcDnsClient();
     client.listPromise()
-    .then(function(result){
+    .then(result => {
       console.log(JSON.stringify(result, null, 2));
     })
-    .catch(function(err){
-      console.log(err)
+    .catch(err => {
+      console.error(err);
     });
   });
 
@@ -26,17 +27,17 @@ program
     const ipVersion = CommonUtil.validateIpVersion(ip);
     const recordType = CommonUtil.getAddressRecordType(ipVersion);
     if (recordType == null) {
-      console.log('Invalid IP address');
+      console.error('Invalid IP address');
       return;
     }
 
-    const recordTtl = parseInt(config.ttl || ttl, 10);
+    const recordTtl = parseInt(ttl || config.ttl, 10);
     if (isNaN(recordTtl)) {
-      console.log('Invalid TTL');
+      console.error('Invalid TTL');
       return;
     }
 
-    record.create(host, ip, recordType, ttl, function(err, result){
+    record.create(host, ip, recordType, recordTtl, function(err, result){
       console.log(JSON.stringify(result, null, 2));
     });
   });
