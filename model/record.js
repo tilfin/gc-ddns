@@ -1,14 +1,16 @@
-var restify = require('restify');
-var GcDnsClient = require('../model/gcdns');
+'use strict';
+
+const restify = require('restify');
+const GcDnsClient = require('../model/gcdns');
 
 
 exports.create = function(host, ip, recordType, ttl, callback) {
-  var client = new GcDnsClient();
+  const client = new GcDnsClient();
   client.listPromise(host, recordType)
-  .then(function(resp) {
+  .then(resp => {
     return (resp.rrsets.length == 1) ? resp.rrsets[0] : null;
   })
-  .then(function(existingRecord) {
+  .then(existingRecord => {
     if (existingRecord && existingRecord.rrdatas[0] == ip) {
       return {
           message: 'IP address is unchanged.'
@@ -16,10 +18,10 @@ exports.create = function(host, ip, recordType, ttl, callback) {
     }
     return client.createPromise(host, ip, recordType, ttl, existingRecord);
   })
-  .then(function(resp) {
+  .then(resp => {
     callback(null, resp);
   })
-  .catch(function(err) {
+  .catch(err => {
     console.log(err);
     console.log(err.stack);
     callback(err);

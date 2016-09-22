@@ -1,8 +1,10 @@
-var config = require('config').config;
-var restify = require('restify');
-var resource = require('./resource');
+'use strict';
 
-var server = restify.createServer({
+const config = require('config').config;
+const restify = require('restify');
+const resource = require('./resource');
+
+const server = restify.createServer({
   name: 'Dynamic DNS API Service for Google Cloud'
 });
 
@@ -13,7 +15,7 @@ server.use(restify.bodyParser({ mapParams: true }));
 resource(server);
 
 if (!module.parent) {
-  var port = process.env.PORT || config.app.port;
+  const port = process.env.PORT || config.app.port;
   server.listen(port);
   console.log("Start API Service port: %d", port);
 }

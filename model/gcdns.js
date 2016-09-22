@@ -1,6 +1,7 @@
-var config = require('config').config.googleCloud;
-var restify = require('restify');
-var google = require('googleapis');
+'use strict';
+
+const config = require('config').config.googleCloud;
+const google = require('googleapis');
 
 
 function GcDnsClient() {
@@ -16,17 +17,16 @@ GcDnsClient.prototype = {
   },
 
   listPromise: function(host, type) {
-    var self = this;
-    return self.dnsClientPromise()
-      .then(function(dns) {
-        var params = self.baseParams();
+    return this.dnsClientPromise()
+      .then(dns => {
+        const params = this.baseParams();
         if (host) {
-          params.name = host + self.FQDNSuffix;
+          params.name = host + this.FQDNSuffix;
         }
         if (type) params.type = type;
 
-        return new Promise(function(resolve, reject) {
-            dns.resourceRecordSets.list(params, function(err, resp) {
+        return new Promise((resolve, reject) => {
+            dns.resourceRecordSets.list(params, (err, resp) => {
               if (err) {
                 reject(err);
               } else {
@@ -38,18 +38,17 @@ GcDnsClient.prototype = {
   },
 
   createPromise: function(host, ip, recordType, ttl, existing) {
-    var self = this;
-    return self.dnsClientPromise()
-      .then(function(dns) {
-        var resRecordSet = {
+    return this.dnsClientPromise()
+      .then(dns => {
+        const resRecordSet = {
           kind: 'dns#resourceRecordSet',
-          name: host + self.FQDNSuffix,
+          name: host + this.FQDNSuffix,
           type: recordType,
           rrdatas: [ip],
           ttl: ttl
         };
 
-        var params = self.baseParams();
+        const params = this.baseParams();
         params.resource = {
           kind: 'dns#change',
           additions: [resRecordSet],
@@ -59,7 +58,7 @@ GcDnsClient.prototype = {
           params.resource.deletions = [existing];
         }
 
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
             dns.changes.create(params, function(err, resp) {
               if (err) {
                 reject(err);
@@ -76,23 +75,22 @@ GcDnsClient.prototype = {
       return Promise.resolve(this.dnsClient);
     }
 
-    var self = this;
-    return new Promise(function(resolve, reject) {
-        var API_SCOPES = [
+    return new Promise((resolve, reject) => {
+        const API_SCOPES = [
           'https://www.googleapis.com/auth/ndev.clouddns.readwrite',
           'https://www.googleapis.com/auth/cloud-platform'
         ];
 
-        var key = require(config.authKeyJsonFile);
+        const key = require(config.authKeyJsonFile);
 
-        var jwtClient = new google.auth.JWT(key.client_email, null, key.private_key, API_SCOPES, null);
-        jwtClient.authorize(function(err, tokens) {
+        const jwtClient = new google.auth.JWT(key.client_email, null, key.private_key, API_SCOPES, null);
+        jwtClient.authorize((err, tokens) => {
           if (err) {
             reject(err);
           } else {
             google.options({ auth: jwtClient });
-            self.dnsClient = google.dns('v1');
-            resolve(self.dnsClient);
+            this.dnsClient = google.dns('v1');
+            resolve(this.dnsClient);
           }
         });
       });

@@ -1,3 +1,5 @@
+'use strict';
+
 exports.validateIpVersion = function(ip) {
   if (ip.match(/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/)) {
     return 4;
