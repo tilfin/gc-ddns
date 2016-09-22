@@ -4,7 +4,7 @@
   "description": "Dynamic DNS API Service for Google Cloud",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,8 @@
   },
   "bin": {
     "gc-ddns": "gc-ddns.js"
+  },
+  "engines": {
+    "node": ">=4.3.0"
   }
 }
