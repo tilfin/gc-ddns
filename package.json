@@ -1,10 +1,10 @@
 {
   "name": "gc-ddns",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dynamic DNS API Service for Google Cloud",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -22,13 +22,14 @@
   },
   "homepage": "https://github.com/tilfin/gc-ddns#readme",
   "dependencies": {
-    "commander": "^2.8.1",
-    "config": "^1.15.0",
-    "googleapis": "^2.1.3",
-    "js-yaml": "^3.3.1",
-    "restify": "^4.0.0"
+    "commander": "^2.9.0",
+    "config": "^1.21.0",
+    "googleapis": "^2.1.7",
+    "js-yaml": "^3.6.1",
+    "restify": "^4.1.1"
   },
-  "bin": {
-    "gc-ddns": "gc-ddns.js"
+  "bin": "./bin/gc-ddns",
+  "engines": {
+    "node": ">=4.3.0"
   }
 }

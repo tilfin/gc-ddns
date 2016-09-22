@@ -6,6 +6,10 @@ Dynamic DNS API Service for Google Cloud
 This is a hub service to connect dynamic IP address endpoint as a home network at any time.
 Your DNS record on Google Cloud is updated by posting this service from Home PC periodically.
 
+## Environment
+
+Node.js 4.3 or Later
+
 ## Configuration
 Edit _config/local.yml_
 
