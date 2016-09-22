@@ -28,9 +28,7 @@
     "js-yaml": "^3.6.1",
     "restify": "^4.1.1"
   },
-  "bin": {
-    "gc-ddns": "gc-ddns.js"
-  },
+  "bin": "./bin/gc-ddns",
   "engines": {
     "node": ">=4.3.0"
   }
